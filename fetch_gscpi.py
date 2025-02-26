@@ -11,7 +11,11 @@ if response.status_code == 200:
     data = BytesIO(response.content)
     
     # Load Excel file and list all sheet names
-    xls = pd.ExcelFile
+    xls = pd.ExcelFile(data)
+    print("Available sheets:", xls.sheet_names)
+else:
+    print(f"Failed to download the file: Status code {response.status_code}")
+
 #######
 
 # import requests
