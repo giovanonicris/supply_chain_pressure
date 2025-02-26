@@ -10,22 +10,22 @@ def download_gscpi_data():
     if response.status_code == 200:
         data = BytesIO(response.content)
         
-        # Load Excel file and list available sheets
+        # load and inspect Excel file
         xls = pd.ExcelFile(data)
-        print("Available sheets:", xls.sheet_names)
-        
-        # Pick the correct sheet dynamically ('GSCPI Monthly Data')
         sheet_name = 'GSCPI Monthly Data'
+        df = pd.read_excel(xls, sheet_name=sheet_name)
         
-        # Read the sheet and skip metadata rows if needed
-        df = pd.read_excel(xls, sheet_name=sheet_name, skiprows=10)
+        # rename cols, drop empty
+        df = df.iloc[:, :2]
+        df.columns = ["Date", "GSCPI"]
+        df = df.dropna(how='all')
         
-        # Save to CSV
+        # write CSV file to repo
         output_file = 'gscpi_data.csv'
         df.to_csv(output_file, index=False)
         print(f"GSCPI data successfully saved to {output_file}")
     else:
-        print(f"Failed to download GSCPI data: Status code {response.status_code}")
+        print(f"GSCPI data failed to download: {response.status_code}")
         exit(1)
 
 if __name__ == "__main__":
