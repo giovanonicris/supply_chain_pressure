@@ -5,6 +5,7 @@ from io import BytesIO
 # URL of the GSCPI data file
 gscpi_url = 'https://www.newyorkfed.org/medialibrary/research/interactives/gscpi/downloads/gscpi_data.xlsx'
 
+# function to grab gscpi data
 def download_gscpi_data():
     response = requests.get(gscpi_url)
     if response.status_code == 200:
